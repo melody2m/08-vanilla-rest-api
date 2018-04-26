@@ -36,15 +36,17 @@ Router.prototype.route = function route() {
       bodyParser(req),
     ])
       .then(() => {
+        console.log('BEFORE IF');
         if (typeof this.route[req.method][req.url.pathname] === 'function') {
+          console.log('BEFORE THIS.ROUTE');
           this.route[req.method][req.url.pathname](req, res);
+          console.log('AFTER THIS.ROUTE');
           return;
         }
 
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.write('Route not found');
         res.end();
-        return undefined;
       })
       .catch((err) => {
         if (err instanceof SyntaxError) {
@@ -53,10 +55,6 @@ Router.prototype.route = function route() {
           res.end();
           return undefined;
         }
-        logger.log(logger.ERROR, JSON.stringify(err));
-        res.writeHead(400, { 'Content-Type': 'text/plain' });
-        res.write('Bad Request THIS ONE');
-        res.end();
         return undefined;
       });
   };

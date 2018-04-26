@@ -6,10 +6,11 @@ const storage = require('../lib/storage');
 
 module.exports = function routeVeggie(router) {
   router.post('/api/veggie', (req, res) => {
-    logger.log(logger.INFO, 'NOTE-ROUTE: POST /api/veggie');
+    logger.log(logger.INFO, 'VEG-ROUTE: POST /api/veggie');
 
     try {
-      const newVeggie = new Veggie(req.body.title, req.body.content);
+      const newVeggie = new Veggie(req.body.color, req.body.texture);
+      console.log(newVeggie);
       storage.create('Veggie', newVeggie)
         .then((veggie) => {
           res.writeHead(201, { 'Content-Type': 'application/json' });

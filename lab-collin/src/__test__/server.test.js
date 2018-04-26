@@ -12,7 +12,7 @@ afterAll(() => server.stop());
 
 describe('VALID request to the API', () => {
   describe('POST /api/veggie', () => {
-    it('should respond with status 201 and create a new veggie', () => {
+    it.only('should respond with status 201 and create a new veggie', () => {
       return superagent.post(`:${testPort}/api/veggie`)
         .send(mockResource)
         .then((res) => {
@@ -21,23 +21,24 @@ describe('VALID request to the API', () => {
           expect(res.body.color).toEqual(mockResource.color);
           expect(res.body.texture).toEqual(mockResource.texture);
           expect(res.status).toEqual(201);
-        });
+        })
+        .catch(err => console.error(err));
     });
   });
   describe('GET /api/veggie', () => {
     it('should respond with status 201 get the veggie data', () => {
-      return superagent.get(`:${testPort}/api/veggie`)
+      return superagent.get(`:${testPort}/api/veggie?id=${mockId}`)
         .then((res) => {
           console.log(res.body);
           expect(res.body.color).toEqual(mockResource.color);
           expect(res.body.texture).toEqual(mockResource.texture);
-          expect(res.status).toEqual(201);
+          expect(res.status).toEqual(200);
         });
     });
   });
   describe('DELETE /api/veggie', () => {
     it('should respond with status 201 get the veggie data', () => {
-      return superagent.delete(`:${testPort}/api/veggie`)
+      return superagent.delete(`:${testPort}/api/veggie?id=${mockId}`)
         .then((res) => {
           console.log(res.body);
           expect(res.body).toEqual(null);
