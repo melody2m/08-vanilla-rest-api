@@ -36,11 +36,8 @@ Router.prototype.route = function route() {
       bodyParser(req),
     ])
       .then(() => {
-        console.log('BEFORE IF');
-        if (typeof this.route[req.method][req.url.pathname] === 'function') {
-          console.log('BEFORE THIS.ROUTE');
-          this.route[req.method][req.url.pathname](req, res);
-          console.log('AFTER THIS.ROUTE');
+        if (typeof this.routes[req.method][req.url.pathname] === 'function') {
+          this.routes[req.method][req.url.pathname](req, res);
           return;
         }
 
@@ -55,6 +52,10 @@ Router.prototype.route = function route() {
           res.end();
           return undefined;
         }
+        logger.log(logger.ERROR, JSON.stringify(err));
+        res.writeHead(400, { 'Content-Type': 'text/plain' });
+        // res.write('Bad Request');
+        res.end();
         return undefined;
       });
   };

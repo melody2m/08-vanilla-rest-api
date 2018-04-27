@@ -32,13 +32,9 @@ storage.fetchOne = function fetchOne(schema, id) {
 };
 
 storage.fetchAll = function fetchAll(schema) {
-  return new Promise((resolve, reject) => {
-    if (!schema) return reject(new Error('expected schema name'));
-    if (!memory[schema]) return reject(new Error('schema not found'));
-    const itemArray = [];
-    memory.forEach(entry => itemArray.push(entry[schema.id]));
-    return resolve(itemArray);
-  });
+  const keys = Object.keys(memory[schema]);
+  const notes = keys.map(id => memory[id]);
+  return notes;
 };
 
 storage.update = function update() {
